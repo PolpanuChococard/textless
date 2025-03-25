@@ -5,12 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class ThemedText extends StatelessWidget {
-  const ThemedText({
-    Key? key,
-    required this.data,
-    this.style,
-    this.extra,
-  }) : super(key: key);
+  const ThemedText({Key? key, required this.data, this.style, this.extra})
+    : super(key: key);
 
   final String data;
   final TextStyle Function(TextTheme)? style;
@@ -18,23 +14,25 @@ class ThemedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(data,
-        style: style!(Theme.of(context).textTheme),
-        overflow: extra?["overflow"],
-        maxLines: extra?["maxLine"],
-        softWrap: extra?["softWrap"],
-        textAlign: extra?["textAlign"],
-        textScaleFactor: extra?["textScaleFactor"]);
+    return Text(
+      data,
+      style: style!(Theme.of(context).textTheme),
+      overflow: extra?["overflow"],
+      maxLines: extra?["maxLine"],
+      softWrap: extra?["softWrap"],
+      textAlign: extra?["textAlign"],
+      textScaleFactor: extra?["textScaleFactor"],
+    );
   }
 
   ThemedText textless<T>(T v) =>
       (v is Map) ? styled(extra: v) : styled(style: v as TextStyle);
 
   ThemedText styled({TextStyle? style, Map? extra}) => ThemedText(
-        data: data,
-        style: (tt) => this.style!(tt).merge(style),
-        extra: {...?this.extra, ...?extra},
-      );
+    data: data,
+    style: (tt) => this.style!(tt).merge(style),
+    extra: {...?this.extra, ...?extra},
+  );
 
   ThemedText get lineThrough =>
       textless(TextStyle(decoration: TextDecoration.lineThrough));
@@ -109,23 +107,31 @@ class ThemedText extends StatelessWidget {
   ThemedText get alignEnd => textless({"textAlign": TextAlign.end});
 }
 
+extension PaddingOnNumb on num {
+  EdgeInsetsGeometry get pl => EdgeInsets.only(left: toDouble());
+  EdgeInsetsGeometry get pr => EdgeInsets.only(right: toDouble());
+  EdgeInsetsGeometry get pt => EdgeInsets.only(top: toDouble());
+  EdgeInsetsGeometry get pb => EdgeInsets.only(bottom: toDouble());
+  EdgeInsetsGeometry get p => EdgeInsets.all(toDouble());
+}
+
 extension ThemedTextStyle on ThemedText {}
 
 extension TextLess on String {
   ThemedText style(TextStyle style) =>
       ThemedText(data: this, style: (t) => style);
   ThemedText get text => ThemedText(data: this, style: (t) => TextStyle());
-  ThemedText get h1 => ThemedText(data: this, style: (t) => t.headline1!);
-  ThemedText get h2 => ThemedText(data: this, style: (t) => t.headline2!);
-  ThemedText get h3 => ThemedText(data: this, style: (t) => t.headline3!);
-  ThemedText get h4 => ThemedText(data: this, style: (t) => t.headline4!);
-  ThemedText get h5 => ThemedText(data: this, style: (t) => t.headline5!);
-  ThemedText get h6 => ThemedText(data: this, style: (t) => t.headline6!);
-  ThemedText get s1 => ThemedText(data: this, style: (t) => t.subtitle1!);
-  ThemedText get s2 => ThemedText(data: this, style: (t) => t.subtitle2!);
-  ThemedText get b1 => ThemedText(data: this, style: (t) => t.bodyText1!);
-  ThemedText get b2 => ThemedText(data: this, style: (t) => t.bodyText2!);
-  ThemedText get btn => ThemedText(data: this, style: (t) => t.button!);
-  ThemedText get cap => ThemedText(data: this, style: (t) => t.caption!);
-  ThemedText get ol => ThemedText(data: this, style: (t) => t.overline!);
+  ThemedText get h1 => ThemedText(data: this, style: (t) => t.displayLarge!);
+  ThemedText get h2 => ThemedText(data: this, style: (t) => t.displayMedium!);
+  ThemedText get h3 => ThemedText(data: this, style: (t) => t.displaySmall!);
+  ThemedText get h4 => ThemedText(data: this, style: (t) => t.headlineLarge!);
+  ThemedText get h5 => ThemedText(data: this, style: (t) => t.headlineMedium!);
+  ThemedText get h6 => ThemedText(data: this, style: (t) => t.headlineSmall!);
+  ThemedText get s1 => ThemedText(data: this, style: (t) => t.titleMedium!);
+  ThemedText get s2 => ThemedText(data: this, style: (t) => t.titleSmall!);
+  ThemedText get b1 => ThemedText(data: this, style: (t) => t.bodyLarge!);
+  ThemedText get b2 => ThemedText(data: this, style: (t) => t.bodyMedium!);
+  ThemedText get btn => ThemedText(data: this, style: (t) => t.labelLarge!);
+  ThemedText get cap => ThemedText(data: this, style: (t) => t.bodySmall!);
+  ThemedText get ol => ThemedText(data: this, style: (t) => t.labelSmall!);
 }
